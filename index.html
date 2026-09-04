@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Engagement pricing</title>
+<title>Engagement investment</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --stable:#21245C; --fresh:#00ADED; --energetic:#0045C2; --passionate:#E34554;
-  --fireball:#F05A28; --limitless:#FAB040;
+  --limitless:#FAB040;
   --gray:#EDEDED; --white:#FFFFFF; --line:#D7D9E0; --body:#2B2D42; --muted:#5A5D77;
   --font:'Poppins',Arial,sans-serif;
 }
@@ -22,17 +22,32 @@ h1{font-size:19px;font-weight:500;color:var(--stable);margin:0 0 30px;letter-spa
 .card{background:var(--white);border-radius:12px;padding:26px 26px 28px;margin-bottom:18px;}
 .eyebrow{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
   color:var(--fresh);margin:0 0 3px;}
-.sect{font-size:16px;font-weight:500;color:var(--stable);margin:0 0 20px;}
+.sect{font-size:16px;font-weight:500;color:var(--stable);margin:0 0 22px;}
 
-label{display:block;font-size:12px;color:var(--muted);margin:0 0 5px;font-weight:400;}
-input[type=text],input[type=number]{width:100%;font-family:var(--font);font-size:16px;
+label{display:block;font-size:13px;color:var(--muted);margin:0 0 6px;font-weight:400;}
+input[type=number]{width:100%;font-family:var(--font);font-size:16px;
   color:var(--stable);background:var(--white);border:1px solid var(--line);
-  border-radius:8px;padding:12px 13px;outline:none;transition:border-color 180ms;}
+  border-radius:8px;padding:13px 14px;outline:none;transition:border-color 180ms;}
 input:focus{border-color:var(--fresh);}
 input[type=number]{-moz-appearance:textfield;}
-.field{margin-bottom:16px;}
+.field{margin-bottom:20px;}
 .field:last-child{margin-bottom:0;}
-.hint{font-size:11px;color:var(--muted);margin-top:5px;}
+
+.money{position:relative;}
+.money span{position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  font-size:16px;color:var(--muted);pointer-events:none;}
+.money input{padding-left:30px;}
+
+/* step buttons */
+.next{display:block;width:100%;margin-top:26px;border:none;cursor:pointer;
+  font-family:var(--font);font-size:17px;font-weight:500;color:#fff;
+  padding:22px 24px;border-radius:12px;
+  background:radial-gradient(circle at 26% 16%, #00ADED 0%, #21245C 78%);
+  box-shadow:0 12px 28px rgba(33,36,92,0.22);transition:opacity 180ms;}
+.next:hover{opacity:0.92;}
+.back{display:inline-block;margin-top:6px;background:none;border:none;cursor:pointer;
+  font-family:var(--font);font-size:14px;font-weight:400;color:var(--muted);padding:10px 0;}
+.back:hover{color:var(--stable);}
 
 /* headline price */
 .head{background:radial-gradient(circle at 26% 16%, #00ADED 0%, #21245C 78%);
@@ -40,476 +55,296 @@ input[type=number]{-moz-appearance:textfield;}
   box-shadow:0 14px 34px rgba(33,36,92,0.22);}
 .head .eyebrow{color:rgba(255,255,255,0.72);}
 .price{font-size:52px;font-weight:600;letter-spacing:-0.025em;line-height:1.05;margin:8px 0 0;}
-.perline{font-size:14px;color:rgba(255,255,255,0.82);margin-top:10px;}
-.omgline{font-size:15px;color:#fff;margin-top:20px;padding-top:18px;
-  border-top:1px solid rgba(255,255,255,0.22);}
+.perline{font-size:14px;color:rgba(255,255,255,0.82);margin-top:12px;line-height:1.7;}
 
-/* calc rows */
-.row{display:flex;align-items:baseline;gap:12px;padding:9px 0;font-size:14px;}
+/* rows */
+.row{display:flex;align-items:baseline;gap:12px;padding:11px 0;font-size:14px;}
 .row .lbl{flex:1;color:var(--body);}
 .row .sub{display:block;font-size:11px;color:var(--muted);margin-top:2px;}
 .row .amt{font-weight:500;color:var(--stable);white-space:nowrap;font-variant-numeric:tabular-nums;}
-.row.tot{border-top:1px solid var(--line);margin-top:6px;padding-top:12px;}
-.row.tot .lbl{font-weight:500;color:var(--stable);}
-.row.grand{border-top:2px solid var(--stable);margin-top:8px;padding-top:14px;font-size:17px;}
-.row.grand .lbl,.row.grand .amt{font-weight:600;color:var(--stable);}
-.row.muted .lbl,.row.muted .amt{color:var(--muted);}
 
-.opt{border-radius:10px;padding:18px 18px 16px;margin-bottom:14px;}
-.opt.win{background:#F4FBFF;border:1px solid var(--fresh);}
-.opt.lose{background:#FAFAFB;border:1px solid var(--line);}
-.opt h3{font-size:13px;font-weight:600;margin:0 0 2px;letter-spacing:0.01em;}
-.opt.win h3{color:var(--stable);}
-.opt.lose h3{color:var(--muted);}
-.opt .note{font-size:11px;color:var(--muted);margin:0 0 12px;}
-.tag{display:inline-block;font-size:10px;font-weight:600;letter-spacing:0.1em;
-  text-transform:uppercase;margin-left:8px;}
-.tag.y{color:var(--fresh);}
-.tag.n{color:var(--muted);}
+/* included list */
+.incl{margin:0;padding:0;list-style:none;}
+.incl li{position:relative;padding:0 0 12px 22px;font-size:14px;line-height:1.55;}
+.incl li:last-child{padding-bottom:0;}
+.incl li::before{content:'';position:absolute;left:2px;top:8px;width:7px;height:7px;
+  border-radius:50%;background:var(--fresh);}
 
-/* talk track */
-.talk{background:#F7F8FA;border-left:3px solid var(--fresh);border-radius:8px;
-  padding:18px 20px;font-size:15px;line-height:1.65;color:var(--body);}
-.copy{margin-top:14px;background:var(--stable);color:#fff;border:none;
-  font-family:var(--font);font-size:13px;font-weight:500;padding:11px 24px;
-  border-radius:999px;cursor:pointer;transition:opacity 180ms;}
-.copy:hover{opacity:0.86;}
-
-/* collapsible rate table */
-details{background:#FFF9EE;border:1px solid var(--limitless);border-radius:12px;
-  padding:0;margin-bottom:18px;}
-summary{cursor:pointer;list-style:none;padding:20px 24px;font-size:14px;
-  font-weight:500;color:var(--stable);display:flex;align-items:center;gap:10px;}
-summary::-webkit-details-marker{display:none;}
-summary::before{content:'';width:7px;height:7px;border-right:2px solid var(--stable);
-  border-bottom:2px solid var(--stable);transform:rotate(-45deg);transition:transform 180ms;
-  flex:none;}
-details[open] summary::before{transform:rotate(45deg);}
-.rates{padding:0 24px 22px;}
-.rates .grp{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;
-  color:var(--muted);margin:20px 0 10px;}
-.rates .grp:first-child{margin-top:4px;}
-.rline{display:flex;align-items:center;gap:14px;padding:6px 0;}
-.rline span{flex:1;font-size:14px;color:var(--body);}
-.rline input{width:130px;flex:none;}
-.warn{font-size:12px;color:var(--stable);background:#FFF3DC;border-radius:8px;
-  padding:12px 14px;margin-top:18px;line-height:1.55;}
+.view{display:none;}
+.view.on{display:block;}
 
 @media print{
   body{background:#fff;}
   .wrap{max-width:none;padding:0;}
   .card,.head{box-shadow:none;page-break-inside:avoid;}
-  details,.copy{display:none;}
+  .next,.back{display:none;}
   input{border:none;padding:0;font-size:14px;}
+  .money input{padding-left:0;}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<h1>Engagement pricing</h1>
+<h1 id="pageTitle">Engagement investment</h1>
 
-<div class="card">
-  <div class="field">
-    <label for="dealName">Deal name</label>
-    <input type="text" id="dealName" placeholder="Optional">
-  </div>
-  <div class="field">
-    <label for="clientName">Prospect / client company</label>
-    <input type="text" id="clientName" placeholder="Optional">
-  </div>
-</div>
+<!-- ============ STEP 1 — business case ============ -->
+<section class="view" id="viewCase">
+  <div class="card">
+    <p class="eyebrow">Business case</p>
+    <h2 class="sect">Five questions about your numbers</h2>
 
-<div class="card">
-  <p class="eyebrow">Delivery</p>
-  <h2 class="sect">What you plan to deliver across the year</h2>
+    <div class="field">
+      <label for="revenue">Annual revenue</label>
+      <div class="money"><span>$</span><input type="number" id="revenue" min="0" step="1000" placeholder="0"></div>
+    </div>
+    <div class="field">
+      <label for="gpMarginPct">Gross profit margin, as a percentage</label>
+      <input type="number" id="gpMarginPct" min="0" step="1" placeholder="0">
+    </div>
+    <div class="field">
+      <label for="problemImpact">What the problems you want solved are costing you each year</label>
+      <div class="money"><span>$</span><input type="number" id="problemImpact" min="0" step="1000" placeholder="0"></div>
+    </div>
+    <div class="field">
+      <label for="clientLtv">Lifetime value of an average new client</label>
+      <div class="money"><span>$</span><input type="number" id="clientLtv" min="0" step="1000" placeholder="0"></div>
+    </div>
+    <div class="field">
+      <label for="salesCycleMonths">Length of an average sales cycle, in months</label>
+      <input type="number" id="salesCycleMonths" min="0" step="1" placeholder="0">
+    </div>
 
-  <div class="field">
-    <label for="learners">Learners</label>
-    <input type="number" id="learners" value="5" min="0" step="1">
+    <button class="next" id="btnNext">Next</button>
   </div>
-  <div class="field">
-    <label for="teamSessions">Team sessions / year</label>
-    <input type="number" id="teamSessions" value="24" min="0" step="1">
-  </div>
-  <div class="field">
-    <label for="aorTeamSessions">…of which AOR-led</label>
-    <input type="number" id="aorTeamSessions" value="0" min="0" step="1">
-    <p class="hint">Subset of team sessions.</p>
-  </div>
-  <div class="field">
-    <label for="leaderSessions">Leader sessions / year</label>
-    <input type="number" id="leaderSessions" value="0" min="0" step="1">
-  </div>
-  <div class="field">
-    <label for="coachingSessions">Leadership coaching sessions / year</label>
-    <input type="number" id="coachingSessions" value="24" min="0" step="1">
-  </div>
-  <div class="field">
-    <label for="travelHours">Travel hours / year</label>
-    <input type="number" id="travelHours" value="0" min="0" step="1">
-  </div>
-  <div class="field">
-    <label for="travelRate">Travel rate ($/hr)</label>
-    <input type="number" id="travelRate" value="375" min="0" step="25">
-    <p class="hint">$375/hr is the documented 3k day rate.</p>
-  </div>
-</div>
+</section>
 
-<div class="card">
-  <p class="eyebrow">Who's delivering</p>
-  <h2 class="sect">Experience of the Associate of Record and trainer</h2>
+<!-- ============ STEP 2 — investment ============ -->
+<section class="view" id="viewPrice">
 
-  <div class="field">
-    <label for="aorYears">Associate of Record experience (years)</label>
-    <input type="number" id="aorYears" value="5" min="0" step="1">
-  </div>
-  <div class="field">
-    <label for="trainerYears">Trainer experience (years)</label>
-    <input type="number" id="trainerYears" value="1" min="0" step="1">
-  </div>
-</div>
-
-<div class="card">
-  <p class="eyebrow">Prospect economics</p>
-  <h2 class="sect">Optional</h2>
-
-  <div class="field">
-    <label for="revenue">Annual revenue</label>
-    <input type="number" id="revenue" value="10000000" min="0" step="1000">
-  </div>
-  <div class="field">
-    <label for="gpMarginPct">Gross profit margin %</label>
-    <input type="number" id="gpMarginPct" value="20" min="0" step="1">
-  </div>
-  <div class="field">
-    <label for="problemImpact">Dollarized impact of problems / year</label>
-    <input type="number" id="problemImpact" value="2000000" min="0" step="1000">
-  </div>
-  <div class="field">
-    <label for="clientLtv">Avg client lifetime value</label>
-    <input type="number" id="clientLtv" value="100000" min="0" step="1000">
-  </div>
-  <div class="field">
-    <label for="salesCycleMonths">Avg sales cycle (months)</label>
-    <input type="number" id="salesCycleMonths" value="3" min="0" step="1">
-  </div>
-</div>
-
-<div class="card">
-  <p class="eyebrow">SEIA / Assessments</p>
-  <h2 class="sect">Optional</h2>
-
-  <div class="field">
-    <label for="overviews">Number of overviews</label>
-    <input type="number" id="overviews" value="1" min="0" step="1">
-  </div>
-  <div class="field">
-    <label for="participants">Number of participants</label>
-    <input type="number" id="participants" value="5" min="0" step="1">
-  </div>
-</div>
-
-<div class="head">
-  <p class="eyebrow">Annual engagement price</p>
-  <p class="price" id="outPrice">$0</p>
-  <p class="perline" id="outPer"></p>
-  <p class="omgline" id="outOmgLine"></p>
-</div>
-
-<div class="card">
-  <p class="eyebrow">How this price was built</p>
-  <h2 class="sect">Greater of the hourly floor or the per-learner fee</h2>
-
-  <div class="opt" id="optA">
-    <h3>Option A — hourly floor<span class="tag" id="tagA"></span></h3>
-    <p class="note">Time on the engagement, billed by experience level.</p>
-    <div id="rowsA"></div>
+  <div class="head">
+    <p class="eyebrow">Monthly investment</p>
+    <p class="price" id="outPrice">$0</p>
+    <p class="perline" id="outPer"></p>
   </div>
 
-  <div class="opt" id="optB">
-    <h3>Option B — per-learner fee<span class="tag" id="tagB"></span></h3>
-    <p class="note" id="noteB"></p>
-    <div id="rowsB"></div>
+  <div class="card">
+    <p class="eyebrow">The engagement</p>
+    <h2 class="sect">What we deliver across the year</h2>
+
+    <div class="field">
+      <label for="learners">People</label>
+      <input type="number" id="learners" min="0" step="1">
+    </div>
+    <div class="field">
+      <label for="teamSessions">Salesperson</label>
+      <input type="number" id="teamSessions" min="0" step="1">
+    </div>
+    <div class="field">
+      <label for="coachingSessions">Leader</label>
+      <input type="number" id="coachingSessions" min="0" step="1">
+    </div>
   </div>
 
-  <div id="rowsTotal" style="margin-top:22px;"></div>
-</div>
-
-<div class="card">
-  <p class="eyebrow">Floor check</p>
-  <h2 class="sect">Where this price sits against the 2026 floors</h2>
-  <div id="rowsFloor"></div>
-</div>
-
-<div class="card" id="cardEcon">
-  <p class="eyebrow">In the prospect's terms</p>
-  <h2 class="sect">What the price looks like against their numbers</h2>
-  <div id="rowsEcon"></div>
-</div>
-
-<div class="card" id="cardTalk">
-  <p class="eyebrow">Talk track</p>
-  <h2 class="sect">How to frame the investment</h2>
-  <div class="talk" id="outTalk"></div>
-  <button class="copy" id="btnCopy">Copy talk track</button>
-</div>
-
-<details>
-  <summary>Rate table — open this to check the numbers against api/submit</summary>
-  <div class="rates">
-
-    <p class="grp">Hourly rate by experience</p>
-    <div class="rline"><span>Years 1–2</span><input type="number" id="r_exp1" value="500" step="25"></div>
-    <div class="rline"><span>Years 3–5</span><input type="number" id="r_exp2" value="1000" step="25"></div>
-    <div class="rline"><span>Years 6+</span><input type="number" id="r_exp3" value="1500" step="25"></div>
-
-    <p class="grp">Per-learner fee, per session</p>
-    <div class="rline"><span>1–9 learners</span><input type="number" id="r_ll1" value="184" step="1"></div>
-    <div class="rline"><span>10+ learners</span><input type="number" id="r_ll2" value="100" step="1"></div>
-
-    <p class="grp">Floors to check against</p>
-    <div class="rline"><span>Trainer hourly minimum</span><input type="number" id="r_minHr" value="1000" step="25"></div>
-    <div class="rline"><span>ICP monthly minimum</span><input type="number" id="r_icpMo" value="5500" step="100"></div>
-
-    <p class="grp">Added to the base</p>
-    <div class="rline"><span>Yoodli &amp; materials, per learner</span><input type="number" id="r_mat" value="500" step="25"></div>
-    <div class="rline"><span>Sandler online, % of subtotal</span><input type="number" id="r_online" value="5" step="0.5"></div>
-
-    <p class="grp">OMG assessment</p>
-    <div class="rline"><span>Per participant</span><input type="number" id="r_omgP" value="550" step="25"></div>
-    <div class="rline"><span>Per overview</span><input type="number" id="r_omgO" value="3600" step="50"></div>
-
-    <div class="warn" id="warnBox"></div>
+  <div class="card">
+    <p class="eyebrow">Included</p>
+    <h2 class="sect">What the investment covers</h2>
+    <ul class="incl" id="outIncl"></ul>
   </div>
-</details>
+
+  <button class="next" id="btnNext2">Next</button>
+
+  <button class="back" id="btnBack">Back to your numbers</button>
+</section>
+
+<!-- ============ STEP 3 — business case ============ -->
+<section class="view" id="viewCase2">
+
+  <div class="head">
+    <p class="eyebrow">Monthly investment</p>
+    <p class="price" id="outPrice2">$0</p>
+    <p class="perline" id="outPer2"></p>
+  </div>
+
+  <div class="card" id="cardEcon">
+    <p class="eyebrow">Business case</p>
+    <h2 class="sect">What the investment looks like next to your numbers</h2>
+    <div id="rowsEcon"></div>
+  </div>
+
+  <button class="back" id="btnBack2">Back to the engagement</button>
+</section>
 
 </div>
 
 <script>
 (function(){
-  var ids = ['dealName','clientName','learners','teamSessions','aorTeamSessions',
-    'leaderSessions','coachingSessions','travelHours','travelRate','aorYears',
-    'trainerYears','revenue','gpMarginPct','problemImpact','clientLtv',
-    'salesCycleMonths','overviews','participants','r_exp1','r_exp2','r_exp3',
-    'r_ll1','r_ll2','r_mat','r_online','r_omgP','r_omgO',
-    'r_minHr','r_icpMo'];
+
+  /* ---------------------------------------------------------------
+     Set up an engagement here, or override any of it in the link:
+     index.html?client=Acme&learners=8&team=24&leader=0&coaching=24
+  --------------------------------------------------------------- */
+  var CONFIG = {
+    client:           '',   // company name shown in the page title
+    learners:          5,
+    teamSessions:     24,
+    aorTeamSessions:   0,   // subset of team sessions led by the Associate of Record
+    leaderSessions:    0,
+    coachingSessions: 24,
+    aorYears:          5,   // Associate of Record experience
+    trainerYears:      1    // trainer experience
+  };
+
+  var RATES = {
+    exp1:      500,   // hourly, years 1-2
+    exp2:     1000,   // hourly, years 3-5
+    exp3:     1500,   // hourly, years 6+
+    learner1:  184,   // per learner, per session, 1-9 learners
+    learner10: 100,   // per learner, per session, 10+ learners
+    materials: 500,   // per learner, practice licenses and materials
+    onlinePct:   5    // percent of subtotal, online platform
+  };
+
+  // ---- query-string overrides ----
+  var q = {};
+  location.search.replace(/^\?/,'').split('&').forEach(function(pair){
+    if (!pair) return;
+    var kv = pair.split('=');
+    q[decodeURIComponent(kv[0])] = decodeURIComponent((kv[1] || '').replace(/\+/g,' '));
+  });
+  var map = { client:'client', learners:'learners', team:'teamSessions',
+    aorTeam:'aorTeamSessions', leader:'leaderSessions', coaching:'coachingSessions',
+    aorYears:'aorYears', trainerYears:'trainerYears' };
+  Object.keys(map).forEach(function(k){
+    if (q[k] === undefined || q[k] === '') return;
+    CONFIG[map[k]] = (k === 'client') ? q[k] : parseFloat(q[k]);
+  });
 
   function el(id){ return document.getElementById(id); }
   function n(id){ var v = parseFloat(el(id).value); return isFinite(v) ? v : 0; }
   function usd(v){ return '$' + Math.round(v).toLocaleString('en-US'); }
   function dec(v,p){ return (isFinite(v) ? v : 0).toFixed(p); }
+  function plural(c,word){ return c + ' ' + word + (c === 1 ? '' : 's'); }
+  function people(c){ return c === 1 ? '1 person' : c + ' people'; }
 
-  function expBand(years){
-    if (years >= 6) return { rate: n('r_exp3'), label: 'Years 6+' };
-    if (years >= 3) return { rate: n('r_exp2'), label: 'Years 3–5' };
-    return { rate: n('r_exp1'), label: 'Years 1–2' };
+  function expRate(years){
+    if (years >= 6) return RATES.exp3;
+    if (years >= 3) return RATES.exp2;
+    return RATES.exp1;
   }
-
-  function learnerBand(learners){
-    if (learners >= 10) return { rate: n('r_ll2'), label: '10+ learners' };
-    return { rate: n('r_ll1'), label: '1–9 learners' };
+  function learnerRate(learners){
+    return learners >= 10 ? RATES.learner10 : RATES.learner1;
   }
-
-  function row(label, sub, amt, cls){
-    return '<div class="row ' + (cls || '') + '">' +
+  function row(label, sub, amt){
+    return '<div class="row">' +
       '<div class="lbl">' + label + (sub ? '<span class="sub">' + sub + '</span>' : '') + '</div>' +
       '<div class="amt">' + amt + '</div></div>';
   }
 
+  // ---- apply config ----
+  if (CONFIG.client) {
+    el('pageTitle').textContent = CONFIG.client + ' \u2014 engagement investment';
+    document.title = CONFIG.client + ' \u2014 engagement investment';
+  }
+  el('learners').value         = CONFIG.learners;
+  el('teamSessions').value     = CONFIG.teamSessions;
+  el('coachingSessions').value = CONFIG.coachingSessions;
+
   function calc(){
-    var learners  = n('learners');
-    var team      = n('teamSessions');
-    var aorTeam   = Math.min(n('aorTeamSessions'), team);
-    var trnTeam   = Math.max(team - aorTeam, 0);
-    var leader    = n('leaderSessions');
-    var coaching  = n('coachingSessions');
-    var travelHrs = n('travelHours');
-    var travelRt  = n('travelRate');
+    var learners = n('learners');
+    var team     = n('teamSessions');
+    var leader   = CONFIG.leaderSessions;
+    var coaching = n('coachingSessions');
 
-    var aor = expBand(n('aorYears'));
-    var trn = expBand(n('trainerYears'));
+    var aorTeam = Math.min(CONFIG.aorTeamSessions, team);
+    var trnTeam = Math.max(team - aorTeam, 0);
+    var aorRate = expRate(CONFIG.aorYears);
+    var trnRate = expRate(CONFIG.trainerYears);
 
-    // sessions the learners actually attend — drives the per-learner fee
     var learnerSessions = team + leader;
 
-    // ---- Option A: hourly floor ----
-    var a = [];
-    if (leader > 0) a.push({ lbl:'AOR leader sessions',
-      sub: leader + ' hrs \u00d7 ' + usd(aor.rate), amt: leader * aor.rate });
-    if (coaching > 0) a.push({ lbl:'AOR leadership coaching',
-      sub: coaching + ' hrs \u00d7 ' + usd(aor.rate), amt: coaching * aor.rate });
-    if (aorTeam > 0) a.push({ lbl:'AOR-led team sessions',
-      sub: aorTeam + ' hrs \u00d7 ' + usd(aor.rate), amt: aorTeam * aor.rate });
-    if (trnTeam > 0) a.push({ lbl:'Trainer team sessions',
-      sub: trnTeam + ' hrs \u00d7 ' + usd(trn.rate), amt: trnTeam * trn.rate });
+    var byHour = (leader * aorRate) + (coaching * aorRate) +
+                 (aorTeam * aorRate) + (trnTeam * trnRate);
+    var byLearner = learners * learnerSessions * learnerRate(learners);
 
-    var totalA = a.reduce(function(s,x){ return s + x.amt; }, 0);
+    var base      = Math.max(byHour, byLearner);
+    var materials = learners * RATES.materials;
+    var subtotal  = base + materials;
+    var total     = subtotal + subtotal * (RATES.onlinePct / 100);
 
-    // ---- Option B: per-learner fee ----
-    var lb = learnerBand(learners);
-    var totalB = learners * learnerSessions * lb.rate;
+    // ---- headline ----
+    var monthly = usd(total / 12);
+    var annual  = usd(total) + ' / year';
+    el('outPrice').textContent  = monthly;
+    el('outPrice2').textContent = monthly;
+    el('outPer').textContent    = annual;
+    el('outPer2').textContent   = annual;
 
-    var usingA = totalA >= totalB;
-    var base = Math.max(totalA, totalB);
+    // ---- what's included ----
+    var inc = [];
+    if (team > 0)     inc.push(plural(team, 'salesperson training session') + ' for ' + people(learners));
+    if (leader > 0)   inc.push(plural(leader, 'leadership training session'));
+    if (coaching > 0) inc.push(plural(coaching, 'leader coaching session'));
+    inc.push('Online platform access for every person on the team');
+    inc.push('Practice licenses and course materials for every person on the team');
+    el('outIncl').innerHTML = inc.map(function(x){ return '<li>' + x + '</li>'; }).join('');
 
-    // ---- base to total ----
-    var travel   = travelHrs * travelRt;
-    var materials = learners * n('r_mat');
-    var subtotal = base + travel + materials;
-    var online   = subtotal * (n('r_online') / 100);
-    var total    = subtotal + online;
-
-    // ---- OMG ----
-    var omgP = n('participants') * n('r_omgP');
-    var omgO = n('overviews') * n('r_omgO');
-    var omg  = omgP + omgO;
-
-    // ================= render =================
-    el('outPrice').textContent = usd(total);
-
-    var per = [];
-    per.push(usd(total / 12) + ' / month');
-    if (learners > 0) per.push(usd(total / learners) + ' / learner / year');
-    if (learners > 0 && learnerSessions > 0) per.push(usd(total / (learners * learnerSessions)) + ' / learner / session');
-    el('outPer').textContent = per.join('\u2003\u00b7\u2003');
-
-    el('outOmgLine').textContent = omg > 0
-      ? 'Plus OMG assessment: ' + usd(omg)
-      : '';
-    el('outOmgLine').style.display = omg > 0 ? 'block' : 'none';
-
-    // Option A
-    el('optA').className = 'opt ' + (usingA ? 'win' : 'lose');
-    el('tagA').className = 'tag ' + (usingA ? 'y' : 'n');
-    el('tagA').textContent = usingA ? 'Selected' : 'Not used';
-    var htmlA = a.map(function(x){ return row(x.lbl, x.sub, usd(x.amt)); }).join('');
-    if (!htmlA) htmlA = row('No sessions entered', '', usd(0), 'muted');
-    el('rowsA').innerHTML = htmlA + row('Total', '', usd(totalA), 'tot');
-
-    // Option B
-    el('optB').className = 'opt ' + (usingA ? 'lose' : 'win');
-    el('tagB').className = 'tag ' + (usingA ? 'n' : 'y');
-    el('tagB').textContent = usingA ? 'Not used' : 'Selected';
-    el('noteB').textContent = lb.label + ' \u00b7 ' + usd(lb.rate) + '/learner/session';
-    el('rowsB').innerHTML =
-      row('Per-learner fee',
-          learners + ' learners \u00d7 ' + learnerSessions + ' sessions \u00d7 ' + usd(lb.rate),
-          usd(totalB)) +
-      row('Total', '', usd(totalB), 'tot');
-
-    // base to total
-    var t = row('Engagement base', usingA ? 'Hourly floor' : 'Per-learner fee', usd(base));
-    if (travel > 0) t += row('Travel', travelHrs + ' hrs \u00d7 ' + usd(travelRt), usd(travel));
-    t += row('Yoodli &amp; materials', learners + ' learners \u00d7 ' + usd(n('r_mat')), usd(materials));
-    t += row('Subtotal', '', usd(subtotal), 'tot');
-    t += row('Sandler online', dec(n('r_online'),0) + '% of subtotal', usd(online));
-    t += row('Total annual price', '', usd(total), 'grand');
-    if (omg > 0){
-      t += row('OMG participants', n('participants') + ' \u00d7 ' + usd(n('r_omgP')), usd(omgP));
-      t += row('OMG overviews', n('overviews') + ' \u00d7 ' + usd(n('r_omgO')), usd(omgO));
-      t += row('Total OMG price', '', usd(omg), 'tot');
-    }
-    el('rowsTotal').innerHTML = t;
-
-    // floor check
-    var monthly = total / 12;
-    var minHr = n('r_minHr'), icpMo = n('r_icpMo');
-    function verdict(pass, txt){
-      return '<span style="color:' + (pass ? '#00ADED' : '#E34554') +
-             ';font-weight:500">' + txt + '</span>';
-    }
-    var f = '';
-    f += row('Monthly investment', 'Total annual / 12', usd(monthly));
-    f += row('ICP monthly minimum', '',
-          verdict(monthly >= icpMo, usd(icpMo) + (monthly >= icpMo ? ' \u2014 clear' : ' \u2014 under')));
-    if (trnTeam > 0){
-      f += row('Trainer hourly rate', 'Billing checkpoint is ' + usd(minHr) + '/hr',
-            verdict(trn.rate >= minHr, usd(trn.rate) + '/hr' +
-              (trn.rate >= minHr ? ' \u2014 clear' : ' \u2014 under floor')));
-    }
-    if (aorTeam > 0 || coaching > 0 || leader > 0){
-      f += row('AOR hourly rate', 'Billing checkpoint is ' + usd(minHr) + '/hr',
-            verdict(aor.rate >= minHr, usd(aor.rate) + '/hr' +
-              (aor.rate >= minHr ? ' \u2014 clear' : ' \u2014 under floor')));
-    }
-    el('rowsFloor').innerHTML = f;
-
-    // prospect economics
-    var rev = n('revenue');
-    var gpPct = n('gpMarginPct');
-    var gp = rev * (gpPct / 100);
+    // ---- in your terms ----
+    var rev    = n('revenue');
+    var gpPct  = n('gpMarginPct');
+    var gp     = rev * (gpPct / 100);
     var impact = n('problemImpact');
-    var ltv = n('clientLtv');
-    var cycle = n('salesCycleMonths');
+    var ltv    = n('clientLtv');
+    var cycle  = n('salesCycleMonths');
 
-    var pctRev = rev > 0 ? (total / rev) * 100 : 0;
-    var pctGp  = gp  > 0 ? (total / gp)  * 100 : 0;
-    var roi    = total > 0 ? impact / total : 0;
+    var pctRev      = rev > 0 ? (total / rev) * 100 : 0;
+    var pctGp       = gp  > 0 ? (total / gp)  * 100 : 0;
+    var roi         = total > 0 ? impact / total : 0;
     var gpPerClient = ltv * (gpPct / 100);
-    var clients = gpPerClient > 0 ? total / gpPerClient : 0;
-    var payback = clients * cycle;
+    var clients     = gpPerClient > 0 ? total / gpPerClient : 0;
+    var payback     = clients * cycle;
 
     var hasEcon = rev > 0 || impact > 0 || ltv > 0;
-    el('cardEcon').style.display = hasEcon ? 'block' : 'none';
-    el('cardTalk').style.display = hasEcon ? 'block' : 'none';
 
-    if (hasEcon){
+    if (!hasEcon){
+      el('rowsEcon').innerHTML =
+        '<div class="row"><div class="lbl" style="color:#5A5D77">' +
+        'Add your numbers on the first page and the business case fills in here.' +
+        '</div></div>';
+    } else {
       var e = '';
-      if (rev > 0)    e += row('Price as % of revenue', '', dec(pctRev,2) + '%');
-      if (gp > 0)     e += row('Price as % of gross profit', usd(gp) + ' GP', dec(pctGp,2) + '%');
-      if (impact > 0) e += row('ROI vs. problem impact', 'Against ' + usd(impact), dec(roi,1) + 'x');
-      if (ltv > 0)    e += row('New clients to break even', usd(gpPerClient) + ' GP per client', dec(clients,1));
-      if (ltv > 0 && cycle > 0) e += row('Payback period', 'At one new client per sales cycle', dec(payback,1) + ' mo');
+      if (rev > 0)    e += row('Share of your annual revenue', '', dec(pctRev,2) + '%');
+      if (gp > 0)     e += row('Share of your annual gross profit', usd(gp) + ' gross profit', dec(pctGp,2) + '%');
+      if (impact > 0) e += row('Return against what the problems cost you',
+                          'Against ' + usd(impact) + ' a year', dec(roi,1) + 'x');
+      if (ltv > 0)    e += row('New clients that cover the investment',
+                          usd(gpPerClient) + ' gross profit per client', dec(clients,1));
+      if (ltv > 0 && cycle > 0) e += row('Time to pay it back',
+                          'At one new client per sales cycle', dec(payback,1) + ' months');
       el('rowsEcon').innerHTML = e;
-
-      var who = el('clientName').value.trim() || 'this prospect';
-      var parts = [];
-      if (rev > 0)    parts.push(dec(pctRev,2) + '% of their top-line revenue');
-      if (gp > 0)     parts.push(dec(pctGp,2) + '% of their annual gross profit');
-      if (impact > 0) parts.push('a ' + dec(roi,1) + ':1 return against the ' + usd(impact) +
-                        ' impact of the problems being solved');
-      if (ltv > 0)    parts.push('covered by the gross profit from ' + dec(clients,1) +
-                        ' additional ' + usd(ltv) + '-LTV clients');
-      if (ltv > 0 && cycle > 0) parts.push('and a payback of ' + dec(payback,1) +
-                        ' months at one new client per sales cycle');
-      el('outTalk').textContent = 'At ' + usd(total) + '/year, the investment for ' + who +
-        ' is ' + parts.join('; ') + '.';
     }
-
-    // unverified-input warning
-    var flags = [];
-    if (learners >= 10) flags.push('the 10+ learner rate, which the pricing sheets put at $100/hr per person but no live run has confirmed');
-    if (n('aorYears') >= 6 || n('trainerYears') >= 6) flags.push('the 6+ experience band, which appears in neither pricing sheet');
-    if (travel > 0) flags.push('whether travel enters before or after the 5%');
-    el('warnBox').innerHTML =
-      'Confirmed across two live runs: the $500 and $1,000 hourly bands, $184 for 1\u20139 learners, $500 materials, 5% online, $550 and $3,600 OMG. Leader sessions, leadership coaching and AOR-led team sessions all bill at the AOR rate; only trainer-led team sessions use the trainer rate. The per-learner fee counts team plus leader sessions. The 5% is corroborated by the Calculator tab, whose line items sum to $54,500 against a stated total of $57,225.' +
-      (flags.length
-        ? '<br><br>This scenario also depends on ' + flags.join('; ') + '. Check against api/submit before quoting.'
-        : '') +
-      '<br><br>Note: the experience bands do not reconcile with 2026_Floors_and_Pricing, which sets a $1,000/hr trainer minimum.';
   }
 
-  ids.forEach(function(id){
-    var e = el(id);
-    if (e) e.addEventListener('input', calc);
+  // ---- steps ----
+  function show(hash){
+    var step = (hash === '#investment') ? 2 : (hash === '#business-case') ? 3 : 1;
+    el('viewCase').className  = 'view' + (step === 1 ? ' on' : '');
+    el('viewPrice').className = 'view' + (step === 2 ? ' on' : '');
+    el('viewCase2').className = 'view' + (step === 3 ? ' on' : '');
+    window.scrollTo(0,0);
+  }
+  window.addEventListener('hashchange', function(){ show(location.hash); });
+  el('btnNext').addEventListener('click',  function(){ location.hash = '#investment'; });
+  el('btnNext2').addEventListener('click', function(){ location.hash = '#business-case'; });
+  el('btnBack').addEventListener('click',  function(){ location.hash = '#your-numbers'; });
+  el('btnBack2').addEventListener('click', function(){ location.hash = '#investment'; });
+
+  ['revenue','gpMarginPct','problemImpact','clientLtv','salesCycleMonths',
+   'learners','teamSessions','coachingSessions'].forEach(function(id){
+    el(id).addEventListener('input', calc);
   });
 
-  el('btnCopy').addEventListener('click', function(){
-    var txt = el('outTalk').textContent;
-    var btn = this;
-    function done(){ btn.textContent = 'Copied'; setTimeout(function(){
-      btn.textContent = 'Copy talk track'; }, 1600); }
-    if (navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(txt).then(done, done);
-    } else {
-      var ta = document.createElement('textarea');
-      ta.value = txt; document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); } catch(e){}
-      document.body.removeChild(ta); done();
-    }
-  });
-
+  show(location.hash);
   calc();
 })();
 </script>
