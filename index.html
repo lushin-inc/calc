@@ -123,7 +123,7 @@ input[type=number]{-moz-appearance:textfield;}
 <section class="view" id="viewPrice">
 
   <div class="head">
-    <p class="eyebrow">Monthly investment</p>
+    <p class="eyebrow">Annual investment</p>
     <p class="price" id="outPrice">$0</p>
     <p class="perline" id="outPer"></p>
   </div>
@@ -133,15 +133,19 @@ input[type=number]{-moz-appearance:textfield;}
     <h2 class="sect">What we deliver across the year</h2>
 
     <div class="field">
-      <label for="learners">People</label>
+      <label for="learners">People being trained</label>
       <input type="number" id="learners" min="0" step="1">
     </div>
     <div class="field">
-      <label for="teamSessions">Salesperson</label>
+      <label for="teamSessions">Team training sessions</label>
       <input type="number" id="teamSessions" min="0" step="1">
     </div>
     <div class="field">
-      <label for="coachingSessions">Leader</label>
+      <label for="leaderSessions">Leadership training sessions</label>
+      <input type="number" id="leaderSessions" min="0" step="1">
+    </div>
+    <div class="field">
+      <label for="coachingSessions">One-on-one leadership coaching sessions</label>
       <input type="number" id="coachingSessions" min="0" step="1">
     </div>
   </div>
@@ -152,27 +156,13 @@ input[type=number]{-moz-appearance:textfield;}
     <ul class="incl" id="outIncl"></ul>
   </div>
 
-  <button class="next" id="btnNext2">Next</button>
-
-  <button class="back" id="btnBack">Back to your numbers</button>
-</section>
-
-<!-- ============ STEP 3 — business case ============ -->
-<section class="view" id="viewCase2">
-
-  <div class="head">
-    <p class="eyebrow">Monthly investment</p>
-    <p class="price" id="outPrice2">$0</p>
-    <p class="perline" id="outPer2"></p>
-  </div>
-
   <div class="card" id="cardEcon">
-    <p class="eyebrow">Business case</p>
+    <p class="eyebrow">In your terms</p>
     <h2 class="sect">What the investment looks like next to your numbers</h2>
     <div id="rowsEcon"></div>
   </div>
 
-  <button class="back" id="btnBack2">Back to the engagement</button>
+  <button class="back" id="btnBack">Back to your numbers</button>
 </section>
 
 </div>
@@ -248,12 +238,13 @@ input[type=number]{-moz-appearance:textfield;}
   }
   el('learners').value         = CONFIG.learners;
   el('teamSessions').value     = CONFIG.teamSessions;
+  el('leaderSessions').value   = CONFIG.leaderSessions;
   el('coachingSessions').value = CONFIG.coachingSessions;
 
   function calc(){
     var learners = n('learners');
     var team     = n('teamSessions');
-    var leader   = CONFIG.leaderSessions;
+    var leader   = n('leaderSessions');
     var coaching = n('coachingSessions');
 
     var aorTeam = Math.min(CONFIG.aorTeamSessions, team);
@@ -273,18 +264,18 @@ input[type=number]{-moz-appearance:textfield;}
     var total     = subtotal + subtotal * (RATES.onlinePct / 100);
 
     // ---- headline ----
-    var monthly = usd(total / 12);
-    var annual  = usd(total) + ' / year';
-    el('outPrice').textContent  = monthly;
-    el('outPrice2').textContent = monthly;
-    el('outPer').textContent    = annual;
-    el('outPer2').textContent   = annual;
+    el('outPrice').textContent = usd(total);
+    var per = [usd(total / 12) + ' / month'];
+    if (learners > 0 && learnerSessions > 0){
+      per.push(usd(total / (learners * learnerSessions)) + ' per person, per session');
+    }
+    el('outPer').textContent = per.join('\u2003\u00b7\u2003');
 
     // ---- what's included ----
     var inc = [];
-    if (team > 0)     inc.push(plural(team, 'salesperson training session') + ' for ' + people(learners));
+    if (team > 0)     inc.push(plural(team, 'team training session') + ' for ' + people(learners));
     if (leader > 0)   inc.push(plural(leader, 'leadership training session'));
-    if (coaching > 0) inc.push(plural(coaching, 'leader coaching session'));
+    if (coaching > 0) inc.push(plural(coaching, 'one-on-one leadership coaching session'));
     inc.push('Online platform access for every person on the team');
     inc.push('Practice licenses and course materials for every person on the team');
     el('outIncl').innerHTML = inc.map(function(x){ return '<li>' + x + '</li>'; }).join('');
@@ -305,13 +296,9 @@ input[type=number]{-moz-appearance:textfield;}
     var payback     = clients * cycle;
 
     var hasEcon = rev > 0 || impact > 0 || ltv > 0;
+    el('cardEcon').style.display = hasEcon ? 'block' : 'none';
 
-    if (!hasEcon){
-      el('rowsEcon').innerHTML =
-        '<div class="row"><div class="lbl" style="color:#5A5D77">' +
-        'Add your numbers on the first page and the business case fills in here.' +
-        '</div></div>';
-    } else {
+    if (hasEcon){
       var e = '';
       if (rev > 0)    e += row('Share of your annual revenue', '', dec(pctRev,2) + '%');
       if (gp > 0)     e += row('Share of your annual gross profit', usd(gp) + ' gross profit', dec(pctGp,2) + '%');
@@ -327,20 +314,17 @@ input[type=number]{-moz-appearance:textfield;}
 
   // ---- steps ----
   function show(hash){
-    var step = (hash === '#investment') ? 2 : (hash === '#business-case') ? 3 : 1;
-    el('viewCase').className  = 'view' + (step === 1 ? ' on' : '');
-    el('viewPrice').className = 'view' + (step === 2 ? ' on' : '');
-    el('viewCase2').className = 'view' + (step === 3 ? ' on' : '');
+    var price = (hash === '#investment');
+    el('viewCase').className  = 'view' + (price ? '' : ' on');
+    el('viewPrice').className = 'view' + (price ? ' on' : '');
     window.scrollTo(0,0);
   }
   window.addEventListener('hashchange', function(){ show(location.hash); });
-  el('btnNext').addEventListener('click',  function(){ location.hash = '#investment'; });
-  el('btnNext2').addEventListener('click', function(){ location.hash = '#business-case'; });
-  el('btnBack').addEventListener('click',  function(){ location.hash = '#your-numbers'; });
-  el('btnBack2').addEventListener('click', function(){ location.hash = '#investment'; });
+  el('btnNext').addEventListener('click', function(){ location.hash = '#investment'; });
+  el('btnBack').addEventListener('click', function(){ location.hash = '#your-numbers'; });
 
   ['revenue','gpMarginPct','problemImpact','clientLtv','salesCycleMonths',
-   'learners','teamSessions','coachingSessions'].forEach(function(id){
+   'learners','teamSessions','leaderSessions','coachingSessions'].forEach(function(id){
     el(id).addEventListener('input', calc);
   });
 
