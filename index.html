@@ -270,7 +270,6 @@ details[open] summary::before{transform:rotate(45deg);}
 
     <p class="grp">Floors to check against</p>
     <div class="rline"><span>Trainer hourly minimum</span><input type="number" id="r_minHr" value="1000" step="25"></div>
-    <div class="rline"><span>New client monthly floor</span><input type="number" id="r_minMo" value="4500" step="100"></div>
     <div class="rline"><span>ICP monthly minimum</span><input type="number" id="r_icpMo" value="5500" step="100"></div>
 
     <p class="grp">Added to the base</p>
@@ -294,7 +293,7 @@ details[open] summary::before{transform:rotate(45deg);}
     'trainerYears','revenue','gpMarginPct','problemImpact','clientLtv',
     'salesCycleMonths','overviews','participants','r_exp1','r_exp2','r_exp3',
     'r_ll1','r_ll2','r_mat','r_online','r_omgP','r_omgO',
-    'r_minHr','r_minMo','r_icpMo'];
+    'r_minHr','r_icpMo'];
 
   function el(id){ return document.getElementById(id); }
   function n(id){ var v = parseFloat(el(id).value); return isFinite(v) ? v : 0; }
@@ -415,15 +414,13 @@ details[open] summary::before{transform:rotate(45deg);}
 
     // floor check
     var monthly = total / 12;
-    var minHr = n('r_minHr'), minMo = n('r_minMo'), icpMo = n('r_icpMo');
+    var minHr = n('r_minHr'), icpMo = n('r_icpMo');
     function verdict(pass, txt){
       return '<span style="color:' + (pass ? '#00ADED' : '#E34554') +
              ';font-weight:500">' + txt + '</span>';
     }
     var f = '';
     f += row('Monthly investment', 'Total annual / 12', usd(monthly));
-    f += row('New client monthly floor', 'Under this, trainer delivers',
-          verdict(monthly >= minMo, usd(minMo) + (monthly >= minMo ? ' \u2014 clear' : ' \u2014 under')));
     f += row('ICP monthly minimum', '',
           verdict(monthly >= icpMo, usd(icpMo) + (monthly >= icpMo ? ' \u2014 clear' : ' \u2014 under')));
     if (trnTeam > 0){
