@@ -136,12 +136,16 @@ input[type=number]{-moz-appearance:textfield;}
     <h2 class="sect">What we deliver across the year</h2>
 
     <div class="field">
-      <label for="learners">People</label>
+      <label for="learners">People being trained</label>
       <input type="number" id="learners" min="0" step="1">
     </div>
     <div class="field">
       <label for="teamSessions">Team</label>
       <input type="number" id="teamSessions" min="0" step="1">
+    </div>
+    <div class="field">
+      <label for="leaderSessions">Leader</label>
+      <input type="number" id="leaderSessions" min="0" step="1">
     </div>
     <div class="field">
       <label for="coachingSessions">Leadership</label>
@@ -181,7 +185,7 @@ input[type=number]{-moz-appearance:textfield;}
 
   /* ---------------------------------------------------------------
      Set up an engagement here, or override any of it in the link:
-     index.html?client=Acme&learners=8&team=24&coaching=24
+     index.html?client=Acme&learners=8&team=24&aorTeam=24&leader=12&coaching=12
      Session counts are annual; the page shows them per month.
   --------------------------------------------------------------- */
   var CONFIG = {
@@ -189,7 +193,8 @@ input[type=number]{-moz-appearance:textfield;}
     learners:          5,
     teamSessions:     24,
     aorTeamSessions:   0,   // subset of team sessions led by the Associate of Record
-    coachingSessions: 24,
+    leaderSessions:    0,   // AOR-led; billed hourly AND counted as learner sessions
+    coachingSessions: 24,   // one-on-one leadership coaching, AOR-led, hourly only
     aorYears:          5,   // Associate of Record experience
     trainerYears:      1    // trainer experience
   };
@@ -199,7 +204,8 @@ input[type=number]{-moz-appearance:textfield;}
     exp2:     1000,   // hourly, years 3-5
     exp3:     1500,   // hourly, years 6+
     learner1:  184,   // per learner, per session, 1-9 learners
-    learner10: 100,   // per learner, per session, 10+ learners
+    learner10: 100,   // per learner, per session, 10-24 learners
+    learner25:  80,   // per learner, per session, 25-99 learners (100+ not yet seen; uses this rate)
     materials: 500,   // per learner, practice licenses and materials
     onlinePct:   5    // percent of subtotal, online platform
   };
@@ -212,7 +218,7 @@ input[type=number]{-moz-appearance:textfield;}
     q[decodeURIComponent(kv[0])] = decodeURIComponent((kv[1] || '').replace(/\+/g,' '));
   });
   var map = { client:'client', learners:'learners', team:'teamSessions',
-    aorTeam:'aorTeamSessions', coaching:'coachingSessions',
+    aorTeam:'aorTeamSessions', leader:'leaderSessions', coaching:'coachingSessions',
     aorYears:'aorYears', trainerYears:'trainerYears' };
   Object.keys(map).forEach(function(k){
     if (q[k] === undefined || q[k] === '') return;
@@ -231,7 +237,9 @@ input[type=number]{-moz-appearance:textfield;}
     return RATES.exp1;
   }
   function learnerRate(learners){
-    return learners >= 10 ? RATES.learner10 : RATES.learner1;
+    if (learners >= 25) return RATES.learner25;
+    if (learners >= 10) return RATES.learner10;
+    return RATES.learner1;
   }
   function row(label, sub, amt){
     return '<div class="row">' +
@@ -246,11 +254,13 @@ input[type=number]{-moz-appearance:textfield;}
   }
   el('learners').value         = CONFIG.learners;
   el('teamSessions').value     = CONFIG.teamSessions;
+  el('leaderSessions').value   = CONFIG.leaderSessions;
   el('coachingSessions').value = CONFIG.coachingSessions;
 
   function calc(){
     var learners = n('learners');
     var team     = n('teamSessions');
+    var leader   = n('leaderSessions');
     var coaching = n('coachingSessions');
 
     var aorTeam = Math.min(CONFIG.aorTeamSessions, team);
@@ -258,9 +268,9 @@ input[type=number]{-moz-appearance:textfield;}
     var aorRate = expRate(CONFIG.aorYears);
     var trnRate = expRate(CONFIG.trainerYears);
 
-    var learnerSessions = team;
+    var learnerSessions = team + leader;
 
-    var byHour = (coaching * aorRate) +
+    var byHour = (coaching * aorRate) + (leader * aorRate) +
                  (aorTeam * aorRate) + (trnTeam * trnRate);
     var byLearner = learners * learnerSessions * learnerRate(learners);
 
@@ -274,8 +284,9 @@ input[type=number]{-moz-appearance:textfield;}
 
     // ---- monthly cadence ----
     var cad = [];
-    var teamMo = perMonth(team), coachMo = perMonth(coaching);
+    var teamMo = perMonth(team), leaderMo = perMonth(leader), coachMo = perMonth(coaching);
     if (teamMo > 0)  cad.push(teamMo + 'x team coaching session' + (teamMo === 1 ? '' : 's'));
+    if (leaderMo > 0) cad.push(leaderMo + 'x leader session' + (leaderMo === 1 ? '' : 's'));
     if (coachMo > 0) cad.push(coachMo + 'x one-on-one leadership coaching session' + (coachMo === 1 ? '' : 's'));
     el('cardCadence').style.display = cad.length ? 'block' : 'none';
     el('outCadence').innerHTML = cad.map(function(x){ return '<li>' + x + '</li>'; }).join('');
@@ -305,7 +316,8 @@ input[type=number]{-moz-appearance:textfield;}
       if (impact > 0) e += row('Return against what the problems cost you',
                           'Against ' + usd(impact) + ' a year', dec(roi,1) + 'x');
       if (ltv > 0)    e += row('New clients that cover the investment',
-                          usd(gpPerClient) + ' gross profit per client', dec(clients,1));
+                          usd(gpPerClient) + ' gross profit per client',
+                          clients > 0 && clients < 1 ? 'Less than 1' : dec(clients,1));
       if (ltv > 0 && cycle > 0) e += row('Time to pay it back',
                           'At one new client per sales cycle', dec(payback,1) + ' months');
       el('rowsEcon').innerHTML = e;
@@ -329,7 +341,7 @@ input[type=number]{-moz-appearance:textfield;}
   el('btnBack').addEventListener('click', function(){ location.hash = '#your-numbers'; });
 
   ['revenue','gpMarginPct','problemImpact','clientLtv','salesCycleMonths',
-   'learners','teamSessions','coachingSessions'].forEach(function(id){
+   'learners','teamSessions','leaderSessions','coachingSessions'].forEach(function(id){
     el(id).addEventListener('input', calc);
   });
 
